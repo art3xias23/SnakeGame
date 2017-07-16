@@ -10,7 +10,7 @@ namespace SnakeGame
     {
         static void Main(string[] args)
         {
-
+            #region Vars
             int[] xPosition = new int[50];
             xPosition[0] = 35;
             int[] yPosition = new int[50];
@@ -19,7 +19,7 @@ namespace SnakeGame
             int appleYDim = 10;
             int applesEaten = 0;
 
-            decimal gameSpeed = 150;
+            decimal gameSpeed = 150m;
 
             bool isGameOn = true;
             bool isWallHit = false;
@@ -27,9 +27,10 @@ namespace SnakeGame
 
             Random random = new Random();
 
-            //Build boundary
+            #endregion
 
-            buildwall();
+
+            #region GameSetup
 
             //Get the snake to appear on screen
 
@@ -39,16 +40,20 @@ namespace SnakeGame
             setApplePositionOnScreen(random, out appleXDim, out appleYDim);
             paintApple(appleXDim, appleYDim);
 
-            
+            //Build boundary
 
+            buildwall();
 
             // Get the snake to move
 
             ConsoleKey command = Console.ReadKey().Key;
 
+            #endregion
+
+
             do
             {
-
+                #region ChangeDirections
                 switch (command)
                 {
                    
@@ -75,8 +80,11 @@ namespace SnakeGame
 
 
                 }
+                #endregion
 
-                //Paint the snake
+                #region Game
+
+                //Paint the snake, Make snake longer
                 paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
                 
 
@@ -115,23 +123,13 @@ namespace SnakeGame
                 //Slow game down
                 System.Threading.Thread.Sleep(Convert.ToInt32(gameSpeed));
 
+                #endregion
+
             } while (isGameOn);
 
            
 
-            
 
-
-
-           
-
-
-            
-
-
-           
-
-            //End vid 2
 
             // Build Welcome screen
 
@@ -145,6 +143,7 @@ namespace SnakeGame
 
         }
 
+        #region Methods
         private static void paintSnake(int applesEaten, int[] xPositionIn, int[] yPositionIn, out int[] xPositionOut, out int[] yPositionOut)
         {
             //Paint the head
@@ -174,7 +173,7 @@ namespace SnakeGame
             //Return the new array
             xPositionOut = xPositionIn;
             yPositionOut = yPositionIn;
-        }
+        } //end paint snake
 
         private static bool DidSnakeHitWall(int xPosition, int yPosition)
         {
@@ -202,7 +201,7 @@ namespace SnakeGame
                 Console.SetCursorPosition(i, 40);
                 Console.Write('#');
             }
-        }
+        } //end building the wall
 
         private static void setApplePositionOnScreen(Random random, out int appleXDim, out int appleYDim)
         {
@@ -221,5 +220,6 @@ namespace SnakeGame
         {
             if (xPosition == appleXDim && yPosition == appleYDim) return true; return false;
         }
+        #endregion
     }
 }
