@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Speech.Synthesis;
 
 namespace SnakeGame
 {
@@ -33,109 +34,178 @@ namespace SnakeGame
             #endregion
 
 
+
+
+            
             // Build Welcome screen
-
-            // Give a player an option to read directions
-
             showMenu(out userAction);
 
-
-            #region GameSetup
-
-            //Get the snake to appear on screen
-
-            paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
-
-            //Get the apple to appear on the screen
-            setApplePositionOnScreen(random, out appleXDim, out appleYDim);
-            paintApple(appleXDim, appleYDim);
-
-            //Build boundary
-
-            buildwall();
-
-            // Get the snake to move
-
-            ConsoleKey command = Console.ReadKey().Key;
-
-            #endregion
-
-
-            do
+            switch (userAction)
             {
-                #region ChangeDirections
-                switch (command)
-                {
-                   
-                    case ConsoleKey.LeftArrow:
-                        Console.SetCursorPosition(xPosition[0], yPosition[0]);
-                        Console.Write(" ");
-                        xPosition[0]--;
-                        break;
-                    case ConsoleKey.UpArrow:
-                        Console.SetCursorPosition(xPosition[0], yPosition[0]);
-                        Console.Write(" ");
-                        yPosition[0]--; ;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        Console.SetCursorPosition(xPosition[0], yPosition[0]);
-                        Console.WriteLine(" ");
-                        xPosition[0]++;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        Console.SetCursorPosition(xPosition[0], yPosition[0]);
-                        Console.WriteLine(" ");
-                        yPosition[0]++;
-                        break;
+                // Give a player an option to read directions
+                #region Change Directions
+                case "1":
+                case "d":
+                case "directions":
+                    Console.Clear();
+                    buildwall();
+                    Console.SetCursorPosition(5, 5);
+                    Console.WriteLine("1) Resize the console window so you can see all");
+                    Console.SetCursorPosition(5, 6);
+                    Console.WriteLine("  4 sides of playing field boarded");
+                    Console.SetCursorPosition(5, 7);
+                    Console.WriteLine("1) Use the arrow keys to move the snake around the field");
+                    Console.SetCursorPosition(5, 8);
+                    Console.WriteLine("3) The snake will die if it runs into the wall");
+                    Console.SetCursorPosition(5, 9);
+                    Console.WriteLine("4) You gain points by eating the apple");
+                    Console.SetCursorPosition(5, 10);
+                    Console.WriteLine("   But your snake will also go faster and get longer");
+                    Console.SetCursorPosition(5, 11);
+                    Console.WriteLine("1) Press Enter to return to the main menu");
+                    Console.ReadLine();
+                    Console.Clear();
+                    showMenu(out userAction);
+                    break;
 
+                # endregion
 
-                }
-                #endregion
+                #region Case Play
+                case "2":
+                case "p":
+                case "play":
 
-                #region Game
+                    #region GameSetup
 
-                //Paint the snake, Make snake longer
-                paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
-                
+                    //Get the snake to appear on screen
 
-                isWallHit = DidSnakeHitWall(xPosition[0], yPosition[0]);
+                    paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
 
-
-                //Detect when snake hits boundary
-                if (isWallHit)
-                {
-                    isGameOn = false;
-                    Console.SetCursorPosition(28, 20);
-                    Console.WriteLine("The snake hit a wall and it died");
-                }
-
-                //Detect when apple was eaten
-                isAppleEaten = determineIfAppleWasEaten(xPosition[0], yPosition[0], appleXDim, appleYDim);
-
-
-                // Place apple on the board (random)
-                if(isAppleEaten)
-                {
+                    //Get the apple to appear on the screen
                     setApplePositionOnScreen(random, out appleXDim, out appleYDim);
                     paintApple(appleXDim, appleYDim);
 
-                    // Keep track of how many apples were eaten
-                    applesEaten++;
+                    //Build boundary
 
-                    //Make snake faster
-                    gameSpeed *= .925m;
-                }
+                    buildwall();
 
-                
-                
+                    // Get the snake to move
 
-                if (Console.KeyAvailable) command = Console.ReadKey().Key;
-                //Slow game down
-                System.Threading.Thread.Sleep(Convert.ToInt32(gameSpeed));
+                    ConsoleKey command = Console.ReadKey().Key;
+
+                    #endregion
+
+
+                    do
+                    {
+                        #region ChangeDirections
+                        switch (command)
+                        {
+
+                            case ConsoleKey.LeftArrow:
+                                Console.SetCursorPosition(xPosition[0], yPosition[0]);
+                                Console.Write(" ");
+                                xPosition[0]--;
+                                break;
+                            case ConsoleKey.UpArrow:
+                                Console.SetCursorPosition(xPosition[0], yPosition[0]);
+                                Console.Write(" ");
+                                yPosition[0]--; ;
+                                break;
+                            case ConsoleKey.RightArrow:
+                                Console.SetCursorPosition(xPosition[0], yPosition[0]);
+                                Console.WriteLine(" ");
+                                xPosition[0]++;
+                                break;
+                            case ConsoleKey.DownArrow:
+                                Console.SetCursorPosition(xPosition[0], yPosition[0]);
+                                Console.WriteLine(" ");
+                                yPosition[0]++;
+                                break;
+
+
+                        }
+                        #endregion
+
+                        #region Game
+
+                        //Paint the snake, Make snake longer
+                        paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
+
+
+                        isWallHit = DidSnakeHitWall(xPosition[0], yPosition[0]);
+
+
+                        //Detect when snake hits boundary
+                        if (isWallHit)
+                        {
+                            isGameOn = false;
+                            Console.SetCursorPosition(28, 20);
+                            Console.WriteLine("The snake hit a wall and it died");
+
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.SetCursorPosition(15, 21);
+                            Console.Write("Your Score is " + applesEaten * 100 + "!");
+                            Console.SetCursorPosition(15, 22);
+                            Console.WriteLine("Press Enter To Continue.");
+                            applesEaten = 0;
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+
+                        //Detect when apple was eaten
+                        isAppleEaten = determineIfAppleWasEaten(xPosition[0], yPosition[0], appleXDim, appleYDim);
+
+
+                        // Place apple on the board (random)
+                        if (isAppleEaten)
+                        {
+                            setApplePositionOnScreen(random, out appleXDim, out appleYDim);
+                            paintApple(appleXDim, appleYDim);
+
+                            // Keep track of how many apples were eaten
+                            applesEaten++;
+
+                            //Make snake faster
+                            gameSpeed *= .925m;
+                        }
+
+
+
+
+                        if (Console.KeyAvailable) command = Console.ReadKey().Key;
+                        //Slow game down
+                        System.Threading.Thread.Sleep(Convert.ToInt32(gameSpeed));
+
+                        #endregion
+
+                    } while (isGameOn);
+
+                    break;
 
                 #endregion
+                case "3":
+                case "e":
+                case "exit":
 
-            } while (isGameOn);
+                    isStayInMenu = false;
+                    Console.Clear();
+
+                    break;
+
+
+
+
+                default:
+                    Console.WriteLine("Your input was not understood, please press enter and try again");
+                    Console.ReadLine();
+                    Console.Clear();
+                    showMenu(out userAction);
+                    break;
+            }
+
+
+           
 
            
 
@@ -154,27 +224,49 @@ namespace SnakeGame
         private static void showMenu(out string userAction)
         {
             string menu1 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"
+            ____
+      _,.-'`_ o `;__,                
+       _.-'` '---'  '
+";
+            string menu2 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"   
+            ____
+      _,.-'`_ o `;__,                
+       _.-'` '---'  '
+    ";
+            string menu3 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"
+            ____
+      _,.-'`_ o `;__,                
+       _.-'` '---'  '
+        ";
+            string menu4 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"
+            ____
+      _,.-'`_ o `;__,                
+       _.-'` '---'  '
+            ";
+            string menu5 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"
+            ____
+      _,.-'`_ o `;__,                
+       _.-'` '---'  '
+                ";
 
-   ---_ ......._-_--.
-      (|\ /      / /| \  \
-      /  /     .'  -=-'   `.
-     /  /    .'             )
-   _/  /   .'        _.)   /
-  / o   o        _.-' /  .'
-  \          _.-'    / .'*|
-   \______.-'//    .'.' \*|
-    \|  \ | //   .'.' _ |*|
-     `   \|//  .'.'_ _ _|*|
-      .  .// .'.' | _ _ \*|
-      \`-|\_/ /    \ _ _ \*\
-       `/'\__/      \ _ _ \*\
-      /^|            \ _ _ \*
-     '  `             \ _ _ \     
-                       \_";
-            string menu2 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
-            string menu3 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
-            string menu4 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
-            string menu5 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
+            Console.WriteLine(menu1);
+            System.Threading.Thread.Sleep(100);
+            Console.WriteLine(menu2);
+            System.Threading.Thread.Sleep(100);
+            Console.WriteLine(menu3);
+            System.Threading.Thread.Sleep(100);
+            Console.WriteLine(menu4);
+            System.Threading.Thread.Sleep(100);
+            Console.WriteLine(menu5);
+            System.Threading.Thread.Sleep(100);
+
+            SpeechSynthesizer toSpeak = new SpeechSynthesizer();
+            toSpeak.SetOutputToDefaultAudioDevice();
+            toSpeak.Speak("The snake game!");
+
+            userAction = Console.ReadLine().ToLower();
+
+
         }
         #endregion
 
