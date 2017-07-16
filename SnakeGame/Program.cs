@@ -27,19 +27,19 @@ namespace SnakeGame
 
             Random random = new Random();
 
+            //Build boundary
+
+            buildwall();
+
             //Get the snake to appear on screen
 
-            Console.SetCursorPosition(xPosition[0], yPosition[0]);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine((char)214);
+            paintSnake(applesEaten, xPosition, yPosition, out xPosition, out yPosition);
 
             //Get the apple to appear on the screen
             setApplePositionOnScreen(random, out appleXDim, out appleYDim);
             paintApple(appleXDim, appleYDim);
 
-            //Build boundary
-
-            buildwall();
+            
 
 
             // Get the snake to move
@@ -153,7 +153,7 @@ namespace SnakeGame
             Console.WriteLine((char)214);
 
             //Paint the body
-            for (int i=1; i < applesEaten; i++)
+            for (int i=1; i < applesEaten + 1; i++)
             {
                 Console.SetCursorPosition(xPositionIn[i], yPositionIn[i]);
                 Console.ForegroundColor = ConsoleColor.Yellow;
