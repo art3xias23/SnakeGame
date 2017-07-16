@@ -19,15 +19,25 @@ namespace SnakeGame
             int appleYDim = 10;
             int applesEaten = 0;
 
+            string userAction = "";
+
             decimal gameSpeed = 150m;
 
             bool isGameOn = true;
             bool isWallHit = false;
             bool isAppleEaten = false;
+            bool isStayInMenu = true;
 
             Random random = new Random();
 
             #endregion
+
+
+            // Build Welcome screen
+
+            // Give a player an option to read directions
+
+            showMenu(out userAction);
 
 
             #region GameSetup
@@ -131,9 +141,7 @@ namespace SnakeGame
 
 
 
-            // Build Welcome screen
-
-            // Give a player an option to read directions
+            
 
             //Show score
 
@@ -142,6 +150,33 @@ namespace SnakeGame
 
 
         }
+        #region Menu
+        private static void showMenu(out string userAction)
+        {
+            string menu1 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"
+
+   ---_ ......._-_--.
+      (|\ /      / /| \  \
+      /  /     .'  -=-'   `.
+     /  /    .'             )
+   _/  /   .'        _.)   /
+  / o   o        _.-' /  .'
+  \          _.-'    / .'*|
+   \______.-'//    .'.' \*|
+    \|  \ | //   .'.' _ |*|
+     `   \|//  .'.'_ _ _|*|
+      .  .// .'.' | _ _ \*|
+      \`-|\_/ /    \ _ _ \*\
+       `/'\__/      \ _ _ \*\
+      /^|            \ _ _ \*
+     '  `             \ _ _ \     
+                       \_";
+            string menu2 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
+            string menu3 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
+            string menu4 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
+            string menu5 = "1) Directions\n  2) Play\n  3) Exit \n\n\n" + @"";
+        }
+        #endregion
 
         #region Methods
         private static void paintSnake(int applesEaten, int[] xPositionIn, int[] yPositionIn, out int[] xPositionOut, out int[] yPositionOut)
